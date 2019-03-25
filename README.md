@@ -1,2 +1,0 @@
-# wizard
-Created with CodeSandbox

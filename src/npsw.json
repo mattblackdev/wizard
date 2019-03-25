@@ -1,0 +1,138 @@
+{
+  "type": "Wizard",
+  "name": "npsw",
+  "label": "NPSW",
+  "defaultStepName": "risks",
+  "children": [
+    {
+      "type": "Step",
+      "name": "intendedUse",
+      "label": "Intended Use",
+      "children": [
+        {
+          "type": "Component",
+          "component": "Title",
+          "props": {
+            "value": "Define the intended use"
+          }
+        },
+        {
+          "type": "Input",
+          "name": "intendedUse",
+          "component": "TextArea",
+          "defaultValue": "hello",
+          "props": {
+            "label": "Intended Use",
+            "placeholder": "The intended use of the XYZ NPSW is to provide support to a scripting interface to ABC engineers executing verified IC designs.  The intended output use is the design input to the development of requirements."
+          }
+        }
+      ],
+      "handlers": [
+        {
+          "on": "nextStep",
+          "name": "updateContent",
+          "params": {}
+        }
+      ],
+      "nextStep": "overview"
+    },
+    {
+      "type": "Step",
+      "name": "overview",
+      "label": "Overview",
+      "children": [
+        {
+          "type": "Component",
+          "component": "Title",
+          "props": {
+            "value": "Provide an overview of the software"
+          }
+        },
+        {
+          "type": "Component",
+          "component": "Help",
+          "props": {
+            "value": "In this section provide an overview of the software, and how it is going to be used in the system (such as the TMV, or test environment), including what the software does.  It helps to provide an overview diagram to explain where the NPSW fits into the process or testing, etc.  This will provide clear insight for any reviewers not intimate with the NPSW."
+          }
+        },
+        {
+          "type": "Input",
+          "name": "overview",
+          "component": "TextArea",
+          "props": {
+            "label": "Overview"
+          }
+        }
+      ],
+      "handlers": [
+        {
+          "on": "nextStep",
+          "name": "updateContent"
+        }
+      ],
+      "nextStep": "risks"
+    },
+    {
+      "type": "Step",
+      "name": "risks",
+      "label": "Risk Assessment",
+      "children": [
+        {
+          "type": "Component",
+          "component": "Title",
+          "props": {
+            "value": "Document the risk analysis"
+          }
+        },
+        {
+          "type": "Component",
+          "component": "Help",
+          "props": {
+            "value": "In this section document the Risk analysis or the Risks associated with the failure of the NPSW.  This analysis should document as appropriate, any impact to the patient, device design or verification, or other such risk as business or regulatory risk.  All identified risk should have an associated risk mitigation in the form of a downstream process control or a design requirement to show that the risk is correctly managed or controlled.  If there are no specific risk mitigating requirements state what downstream activities would catch or cover a failure."
+          }
+        },
+        {
+          "type": "Group",
+          "name": "risks",
+          "component": "Rows",
+          "multiple": true,
+          "children": [
+            {
+              "type": "Input",
+              "component": "TextArea",
+              "name": "description",
+              "props": {
+                "label": "Risk Description",
+                "placeholder": "Provide a description of the risk..."
+              }
+            },
+            {
+              "type": "Input",
+              "component": "TextArea",
+              "name": "potentialImpact",
+              "props": {
+                "label": "Potential Impact",
+                "placeholder": "Provide the description of the potential impact..."
+              }
+            },
+            {
+              "type": "Input",
+              "component": "TextArea",
+              "name": "mitigation",
+              "props": {
+                "label": "Mitigation",
+                "placeholder": "Describe the mitigation (i.e. SW design Req, user manual, etc.)"
+              }
+            }
+          ]
+        }
+      ],
+      "handlers": [
+        {
+          "on": "nextStep",
+          "name": "updateContent"
+        }
+      ]
+    }
+  ]
+}
