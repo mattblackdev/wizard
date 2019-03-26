@@ -7,6 +7,9 @@ export { Typography } from './Typography'
 export { Rows } from './Rows'
 
 // Inputs
+export { SubmitButton } from './SubmitButton'
 export { TextArea } from './TextArea'
 export { YesNoRadio } from './YesNoRadio'
 export { CheckboxList } from './CheckboxList'
+export { Select } from './Select'
+export { Text } from './Text'

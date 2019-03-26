@@ -152,7 +152,7 @@
           "type": "Component",
           "component": "Title",
           "props": {
-            "value": "Let's do a quick check for standard requirements"
+            "value": "Let's check for standard requirements"
           }
         },
         {
@@ -251,7 +251,63 @@
           }
         }
       ],
-      "handlers": []
+      "handlers": [],
+      "nextStep": "recordManagement"
+    },
+    {
+      "type": "Step",
+      "name": "recordManagement",
+      "label": "Record Management",
+      "children": [
+        {
+          "type": "Component",
+          "component": "Title",
+          "props": {
+            "value": "Which systems will be used for record management?"
+          }
+        },
+        {
+          "type": "Input",
+          "name": "configurationManagement",
+          "component": "Select",
+          "props": {
+            "label": "Control System",
+            "options": [
+              {
+                "label": "MRCS",
+                "value": "mrcs"
+              },
+              {
+                "label": "Other",
+                "value": "other"
+              }
+            ]
+          }
+        },
+        {
+          "type": "Input",
+          "name": "configurationManagement_other",
+          "component": "Text",
+          "props": {
+            "label": "Control System Name",
+            "placeholder": "MRCS - Medtronic Records Control System",
+            "style": {
+              "minWidth": 400
+            }
+          },
+          "conditional": {
+            "show": true,
+            "when": "configurationManagement",
+            "equals": "other"
+          }
+        }
+      ],
+      "handlers": [
+        {
+          "on": "nextStep",
+          "name": "updateContent"
+        }
+      ]
     }
   ]
 }

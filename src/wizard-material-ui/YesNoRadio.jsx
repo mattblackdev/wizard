@@ -13,11 +13,9 @@ export function YesNoRadio(props) {
     Object.assign({}, defaultProps, props),
   )
   return (
-    <div style={{ marginBottom: 24 }}>
+    <div style={{ margin: '24px 0px' }}>
       <FormControl component="fieldset">
-        <FormLabel component="legend" style={{ fontWeight: 'bold' }}>
-          {props.label}
-        </FormLabel>
+        <FormLabel component="legend">{props.label}</FormLabel>
         <RadioGroup {...radioGroupProps}>
           <FormControlLabel
             value="no"

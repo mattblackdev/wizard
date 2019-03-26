@@ -3,9 +3,12 @@ import FormLabel from '@material-ui/core/FormLabel'
 import FormControl from '@material-ui/core/FormControl'
 import FormGroup from '@material-ui/core/FormGroup'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
-import FormHelperText from '@material-ui/core/FormHelperText'
 import Checkbox from '@material-ui/core/Checkbox'
 import { fieldToCheckbox } from 'formik-material-ui'
+
+const defaultProps = {
+  color: 'primary',
+}
 
 export function CheckboxList(props) {
   function handleChange(option) {
@@ -25,9 +28,11 @@ export function CheckboxList(props) {
     }
   }
   return (
-    <div style={{ marginBottom: 24 }}>
+    <div style={{ margin: '24px 0px' }}>
       <FormControl component="fieldset">
-        <FormLabel component="legend" style={{ fontWeight: 'bold' }}>
+        <FormLabel
+          component="legend"
+          style={{ fontWeight: 'bold', marginBottom: 8 }}>
           {props.label}
         </FormLabel>
         <FormGroup>
@@ -36,7 +41,7 @@ export function CheckboxList(props) {
               key={option.value}
               control={
                 <Checkbox
-                  {...fieldToCheckbox(props)}
+                  {...Object.assign({}, defaultProps, fieldToCheckbox(props))}
                   checked={props.field.value.includes(option.value)}
                   onChange={handleChange(option)}
                   onBlur={props.field.onBlur}

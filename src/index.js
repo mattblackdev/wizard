@@ -5,6 +5,7 @@ import ThemeProvider from './ThemeProvider'
 import npsw from './npsw.json'
 import Wizard from './wizard/Wizard'
 import * as wizardComponents from './wizard-material-ui'
+import Paper from '@material-ui/core/Paper'
 
 /*
   - Intended Use, RichText
@@ -41,7 +42,7 @@ import * as wizardComponents from './wizard-material-ui'
 function App() {
   return (
     <ThemeProvider>
-      <div style={{ margin: 16 }}>
+      <Paper style={{ margin: '16px auto', padding: 32, maxWidth: 900 }}>
         <Wizard
           definition={npsw}
           handlers={{
@@ -51,7 +52,7 @@ function App() {
           }}
           components={wizardComponents}
         />
-      </div>
+      </Paper>
     </ThemeProvider>
   )
 }
