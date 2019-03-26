@@ -1,8 +1,4 @@
-import lodash from 'lodash'
-import deepdash from 'deepdash'
 import _isFunction from 'lodash/isFunction'
-
-const _ = deepdash(lodash)
 
 export const WIZARD_TYPES = {
   WIZARD: 'Wizard',
@@ -12,16 +8,9 @@ export const WIZARD_TYPES = {
   INPUT: 'Input',
 }
 
-export function getInputs(o) {
-  return o.children.filter(c => c.type === WIZARD_TYPES.INPUT)
-}
-
-export function getGroups(o) {
-  return o.children.filter(c => c.type === WIZARD_TYPES.GROUP)
-}
-
-export function getArrayGroups(o) {
-  return o.children.filter(c => c.multiple && WIZARD_TYPES.GROUP)
+export function getIsConditionMet(child, values) {
+  const value = values[child.conditional.when]
+  return value === child.conditional.equals
 }
 
 export function getInitialValues(step) {
@@ -35,17 +24,6 @@ export function getInitialValues(step) {
     }
     return inputMap
   }, {})
-}
-
-export function getInputDefaultValue(input) {
-  if (input.defaultValue !== undefined) {
-    return input.defaultValue
-  } else {
-    switch (input.type) {
-      default:
-        return ''
-    }
-  }
 }
 
 export function getStepByName(definition, name) {
@@ -88,17 +66,6 @@ export function getInitialStep(definition, initialStepName) {
   return initialStep
 }
 
-// export function getInitialValues(inputs, initialValues = {}) {
-//   const _initialValues = { ...initialValues }
-//   for (const input of inputs) {
-//     if (initialValues[input.name] === undefined) {
-//       const defaultValue = getInputDefaultValue(input)
-//       _initialValues[input.name] = defaultValue
-//     }
-//   }
-//   return _initialValues
-// }
-
 export function getHandlersFor(eventName, handlers, step) {
   const _handlers = []
   if (!step || !step.handlers) return _handlers
@@ -115,4 +82,15 @@ export function getHandlersFor(eventName, handlers, step) {
     _handlers.push(handler)
   }
   return _handlers
+}
+
+function getInputDefaultValue(input) {
+  if (input.defaultValue !== undefined) {
+    return input.defaultValue
+  } else {
+    switch (input.type) {
+      default:
+        return ''
+    }
+  }
 }

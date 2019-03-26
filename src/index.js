@@ -41,7 +41,7 @@ import * as wizardComponents from './wizard-material-ui'
 function App() {
   return (
     <ThemeProvider>
-      <div style={{ margin: 8 }}>
+      <div style={{ margin: 16 }}>
         <Wizard
           definition={npsw}
           handlers={{

@@ -2,7 +2,7 @@
   "type": "Wizard",
   "name": "npsw",
   "label": "NPSW",
-  "defaultStepName": "risks",
+  "defaultStepName": "standardRequirements",
   "children": [
     {
       "type": "Step",
@@ -103,7 +103,7 @@
               "name": "description",
               "props": {
                 "label": "Risk Description",
-                "placeholder": "Provide a description of the risk..."
+                "placeholder": "Describe the risk..."
               }
             },
             {
@@ -112,7 +112,7 @@
               "name": "potentialImpact",
               "props": {
                 "label": "Potential Impact",
-                "placeholder": "Provide the description of the potential impact..."
+                "placeholder": "Describe its potential impact..."
               }
             },
             {
@@ -121,7 +121,7 @@
               "name": "mitigation",
               "props": {
                 "label": "Mitigation",
-                "placeholder": "Describe the mitigation (i.e. SW design Req, user manual, etc.)"
+                "placeholder": "Describe how it will be mitigated (i.e. SW design Req, user manual, etc.)"
               }
             }
           ]
@@ -132,7 +132,126 @@
           "on": "nextStep",
           "name": "updateContent"
         }
-      ]
+      ],
+      "nextStep": "standardRequirements"
+    },
+    {
+      "type": "Step",
+      "name": "standardRequirements",
+      "label": "Standard Requirements",
+      "children": [
+        {
+          "type": "Component",
+          "component": "Typography",
+          "props": {
+            "children": "Before we gather your software requirements...",
+            "gutterBottom": true
+          }
+        },
+        {
+          "type": "Component",
+          "component": "Title",
+          "props": {
+            "value": "Let's do a quick check for standard requirements"
+          }
+        },
+        {
+          "type": "Input",
+          "component": "YesNoRadio",
+          "name": "isSpreadsheetTemplate",
+          "defaultValue": "no",
+          "props": {
+            "label": "Is the NPSW a spreadsheet template?"
+          }
+        },
+        {
+          "type": "Input",
+          "component": "CheckboxList",
+          "name": "spreadsheetRequirements",
+          "defaultValue": [],
+          "props": {
+            "label": "Select any applicable requirements for spreadsheet templates",
+            "options": [
+              {
+                "label": "Protect non-input cells of the spreadsheet so they cannot be modified",
+                "value": "protect_non-input_cells"
+              },
+              {
+                "label": "Restrict data entry to appropriate cells of the spreadsheet",
+                "value": "restrict_data_entry"
+              },
+              {
+                "label": "Protect the spreadsheet file",
+                "value": "protect_the_spreadsheet"
+              }
+            ]
+          },
+          "conditional": {
+            "show": true,
+            "when": "isSpreadsheetTemplate",
+            "equals": "yes"
+          }
+        },
+        {
+          "type": "Input",
+          "component": "YesNoRadio",
+          "name": "part11_electronicRecords",
+          "defaultValue": "no",
+          "props": {
+            "label": "Will the software handle electronic records for regulatory use?"
+          }
+        },
+        {
+          "type": "Input",
+          "component": "CheckboxList",
+          "name": "part11_electronicRecords_requirements",
+          "defaultValue": [],
+          "props": {
+            "label": "Select any applicable requirements",
+            "options": [
+              {
+                "label": "The ability to generate accurate and complete copies of records in both human readable and electronic form suitable for inspection, review, and copying by the agency",
+                "value": "generate_copies"
+              }
+            ]
+          },
+          "conditional": {
+            "show": true,
+            "when": "part11_electronicRecords",
+            "equals": "yes"
+          }
+        },
+        {
+          "type": "Input",
+          "component": "YesNoRadio",
+          "name": "part11_auditTrails",
+          "defaultValue": "no",
+          "props": {
+            "label": "Will it create audit trails for permanent electronic records?"
+          }
+        },
+        {
+          "type": "Input",
+          "component": "CheckboxList",
+          "name": "part11_auditTrails_requirements",
+          "defaultValue": [],
+          "props": {
+            "label": "Select any applicable requirements",
+            "options": [
+              {
+                "label": "Use of secure, computer-generated, time-stamped audit trails to independently record the date and time of operator entries and actions that create, modify, or delete electronic records",
+                "value": "timestamped_audit_trails"
+              }
+            ]
+          },
+          "conditional": {
+            "show": true,
+            "when": "part11_auditTrails",
+            "equals": "yes"
+          }
+        }
+      ],
+      "handlers": []
     }
   ]
 }

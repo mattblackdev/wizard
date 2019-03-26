@@ -12,10 +12,9 @@ export function Rows(props) {
           <Grid item key={rowIndex} xs={12}>
             <Grid container spacing={8} alignItems="center">
               <Grid item>
-                <Typography variant="display2">{rowIndex + 1}</Typography>
+                <Typography variant="h4">{rowIndex + 1}</Typography>
               </Grid>
               {row.map((field, fieldIndex) => {
-                const size = 12
                 return (
                   <Grid item key={fieldIndex} fluid>
                     {field}
@@ -30,10 +29,11 @@ export function Rows(props) {
         <Button
           type="button"
           variant="contained"
+          color="primary"
           onClick={() => {
             props.arrayHelpers.push(props.initialValues)
           }}>
-          Add
+          Add Another
         </Button>
       </Toolbar>
     </div>

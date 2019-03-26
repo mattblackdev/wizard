@@ -1,5 +1,5 @@
 import React from 'react'
-import MuiTextField from '@material-ui/core/TextField'
+import TextField from '@material-ui/core/TextField'
 import { fieldToTextField } from 'formik-material-ui'
 
 const defaultProps = {
@@ -12,8 +12,6 @@ const defaultProps = {
 
 export function TextArea(props) {
   return (
-    <MuiTextField
-      {...fieldToTextField(Object.assign({}, defaultProps, props))}
-    />
+    <TextField {...fieldToTextField(Object.assign({}, defaultProps, props))} />
   )
 }

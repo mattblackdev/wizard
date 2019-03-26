@@ -2,7 +2,6 @@ import { useMemo, useReducer } from 'react'
 
 import {
   getInitialStep,
-  getInputs,
   getInitialValues,
   getStepByName,
   getHandlersFor,
