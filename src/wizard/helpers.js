@@ -8,6 +8,15 @@ export const WIZARD_TYPES = {
   INPUT: 'Input',
 }
 
+export const WIZARD_DEFAULT_COMPONENTS = {
+  STEPPER: 'Stepper',
+  TITLE: 'Title',
+  TYPOGRAPHY: 'Typography',
+  SUBMIT_BUTTON: 'SubmitButton',
+  TEXT: 'Text',
+  ROWS: 'Rows',
+}
+
 export function getIsConditionMet(child, values) {
   const value = values[child.conditional.when]
   return value === child.conditional.equals
@@ -41,29 +50,84 @@ export function getStepByName(definition, name) {
 }
 
 export function getInitialStep(definition, initialStepName) {
+  // Initial step can come from 3 places
   let initialStep
+  // Firstly, the name passed to Wizard
   if (initialStepName) {
     initialStep = getStepByName(definition, initialStepName)
-  }
-  if (!initialStep) {
-    if (initialStepName)
+    if (initialStep) {
+      return initialStep
+    } else {
       console.warn(
         `Wizard Definition "${
           definition.name
-        }" does not have a step named "${initialStepName}". Defaulting to "${
-          definition.defaultStepName
-        }"`,
+        }" does not have a step named "${initialStepName}"`,
       )
+    }
+  }
+
+  // Secondly, the defaultStepName included in the definition
+  if (definition.defaultStepName) {
     initialStep = getStepByName(definition, definition.defaultStepName)
+    if (initialStep) {
+      return initialStep
+    } else {
+      console.warn(
+        `Wizard Definition "${definition.name}" has a defaultStepName of "${
+          definition.defaultStepName
+        }" but does not have a step with this name`,
+      )
+    }
   }
-  if (!initialStep) {
-    throw new Error(
-      `Wizard Definition "${definition.name}" is invalid. The default step "${
-        definition.defaultStepName
-      }" does not exist`,
-    )
+
+  // Finally, the default is the first step in the definition
+  const steps = definition.children.filter(
+    child => child.type === WIZARD_TYPES.STEP,
+  )
+  if (steps.length) {
+    initialStep = steps[0]
   }
+
   return initialStep
+}
+
+export function getStepsArray(definition, initialStep) {
+  const steps = []
+
+  if (!initialStep) {
+    initialStep = getInitialStep(definition)
+    if (!initialStep) return steps
+  }
+
+  function pushStep({ name, label }) {
+    steps.push({ name, label })
+  }
+
+  function getIsCircular({ name }) {
+    return Boolean(steps.find(s => s.name === name))
+  }
+
+  function pushNextSteps(currentStep) {
+    if (currentStep.nextStep) {
+      const nextStep = getStepByName(definition, currentStep.nextStep)
+      if (!nextStep) return
+      if (getIsCircular(nextStep)) {
+        console.warn(
+          `Wizard definition "${definition.name}" has circular steps: "${
+            currentStep.name
+          }", ${nextStep.name}`,
+        )
+        return
+      }
+      pushStep(nextStep)
+      pushNextSteps(nextStep)
+    }
+    return
+  }
+
+  pushStep(initialStep)
+  pushNextSteps(initialStep)
+  return steps
 }
 
 export function getHandlersFor(eventName, handlers, step) {

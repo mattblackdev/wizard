@@ -1,15 +1,33 @@
 import React from 'react'
-import Button from '@material-ui/core/Button'
+import Fab from '@material-ui/core/Fab'
+import Grow from '@material-ui/core/Grow'
+import ContinueIcon from '@material-ui/icons/ForwardSharp'
+import FinishIcon from '@material-ui/icons/Done'
 
-export function SubmitButton(props) {
+const defaultProps = {
+  variant: 'extended',
+  color: 'primary',
+}
+
+export function SubmitButton({ isLastStep, ...props }) {
+  const buttonProps = Object.assign({}, defaultProps, props)
   return (
     <div
       style={{
         display: 'flex',
         justifyContent: 'flex-end',
-        margin: '16px 32px',
+        margin: '16px',
       }}>
-      <Button variant="contained" color="primary" {...props} />
+      <Grow in={isLastStep} mountOnEnter>
+        <Fab size="large" {...buttonProps}>
+          <FinishIcon style={{ marginRight: 4 }} /> Finish
+        </Fab>
+      </Grow>
+      <Grow in={!isLastStep} unmountOnExit timeout={1500}>
+        <Fab {...buttonProps}>
+          Continue <ContinueIcon style={{ marginLeft: 8 }} />
+        </Fab>
+      </Grow>
     </div>
   )
 }

@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react'
+import React, { useState } from 'react'
 import Link from '@material-ui/core/Link'
 import Collapse from '@material-ui/core/Collapse'
 import Typography from '@material-ui/core/Typography'
@@ -6,21 +6,21 @@ import Typography from '@material-ui/core/Typography'
 export function Help(props) {
   const [open, setOpen] = useState(false)
   return (
-    <Fragment>
+    <div style={{ marginBottom: 16 }}>
       <Link
         style={{ display: 'flex', alignItems: 'center', fontWeight: 'bold' }}
         component="button"
         variant="body2"
         onClick={() => setOpen(!open)}
         type="button"
-        color="primary">
+        color="secondary">
         {open ? 'Close' : 'Learn More'}
       </Link>
       <Collapse in={open} component="div">
-        <Typography style={{ maxWidth: 800 }} gutterBottom>
+        <Typography variant="body1" style={{ maxWidth: 800 }}>
           {props.value}
         </Typography>
       </Collapse>
-    </Fragment>
+    </div>
   )
 }

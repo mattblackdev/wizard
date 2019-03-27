@@ -42,7 +42,7 @@ import Paper from '@material-ui/core/Paper'
 function App() {
   return (
     <ThemeProvider>
-      <Paper style={{ margin: '16px auto', padding: 32, maxWidth: 900 }}>
+      <Paper style={{ margin: '64px auto', padding: 32, maxWidth: 900 }}>
         <Wizard
           definition={npsw}
           handlers={{

@@ -4,11 +4,65 @@ import { Formik, Form, Field, FieldArray } from 'formik'
 import useWizard from './useWizard'
 import { WIZARD_TYPES, getIsConditionMet } from './helpers'
 
-export default function Wizard({ definition, handlers, components }) {
-  const { initialValues, step, handleSubmit } = useWizard(definition, handlers)
+const defaultDefinition = {
+  type: WIZARD_TYPES.WIZARD,
+  children: [
+    {
+      type: WIZARD_TYPES.STEP,
+      name: 'step1',
+      children: [],
+    },
+  ],
+}
 
-  if (!step) return <p>done!</p>
-  const SubmitButton = components.SubmitButton
+const defaultComponents = {
+  Stepper: props => <p>{props.step.label}</p>,
+  Title: props => <h4 children="" {...props} />,
+  Typography: props => <p children="" {...props} />,
+  SubmitButton: ({ isLastStep, ...props }) => (
+    <Field component="button" {...props}>
+      Submit
+    </Field>
+  ),
+  Text: ({ form, field, ...props }) => <input {...props} {...field} />,
+  Rows: props => (
+    <div>
+      {props.groups.map((group, groupIndex) => (
+        <div key={groupIndex} style={{ display: 'flex' }}>
+          {group.map((field, fieldIndex) => (
+            <div key={fieldIndex} style={{ flex: 1, padding: 8 }}>
+              {field}
+            </div>
+          ))}
+        </div>
+      ))}
+      <div>
+        <button
+          onClick={() => {
+            props.arrayHelpers.push(props.initialValues)
+          }}>
+          Add
+        </button>
+      </div>
+    </div>
+  ),
+}
+
+export default function Wizard({
+  definition = defaultDefinition,
+  handlers = [],
+  components: Components = defaultComponents,
+  ...options
+}) {
+  const {
+    initialValues,
+    handleSubmit,
+    step,
+    steps,
+    activeStepIndex,
+  } = useWizard(definition, handlers, options)
+
+  if (!step) return null
   return (
     <Formik
       key={step.name}
@@ -17,13 +71,25 @@ export default function Wizard({ definition, handlers, components }) {
       render={({ isSubmitting, values }) => {
         return (
           <Form>
-            {step.children.map((child, key) =>
-              renderChild(child, key, components, values, initialValues),
+            {Components.Stepper && (
+              <Components.Stepper
+                activeStepIndex={activeStepIndex}
+                step={step}
+                steps={steps}
+              />
             )}
 
-            <SubmitButton type="submit" disabled={isSubmitting}>
-              {step.nextStep ? 'Continue' : 'Finish'}
-            </SubmitButton>
+            {step.children.map((child, key) =>
+              renderChild(child, key, Components, values, initialValues),
+            )}
+
+            {Components.SubmitButton && (
+              <Components.SubmitButton
+                type="submit"
+                disabled={isSubmitting}
+                isLastStep={Boolean(step.nextStep) ? false : true}
+              />
+            )}
           </Form>
         )
       }}

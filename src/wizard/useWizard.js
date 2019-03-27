@@ -5,6 +5,7 @@ import {
   getInitialValues,
   getStepByName,
   getHandlersFor,
+  getStepsArray,
 } from './helpers'
 
 const ACTIONS = {
@@ -18,6 +19,11 @@ export default function useWizard(definition, handlers, options = {}) {
     () => getInitialStep(definition, options.initialStepName),
     [definition, options.initialStepName],
   )
+
+  const steps = useMemo(() => getStepsArray(definition, initialStep), [
+    definition,
+    initialStep,
+  ])
 
   const [state, dispatch] = useReducer(
     (state, action) => {
@@ -43,14 +49,10 @@ export default function useWizard(definition, handlers, options = {}) {
     },
     {
       step: initialStep,
-      values: options.values || {},
+      values: options.initialValues || {},
     },
   )
-  console.info(`${definition.name} state`, state)
 
-  // const inputs = useMemo(() => (state.step ? getInputs(state.step) : []), [
-  //   state.step,
-  // ])
   const initialValues = useMemo(
     () => getInitialValues(state.step, options.initialValues),
     [state.step, options.initialValues],
@@ -58,17 +60,30 @@ export default function useWizard(definition, handlers, options = {}) {
 
   function handleSubmit(values, actions) {
     const submitHandlers = getHandlersFor('nextStep', handlers, state.step)
-    Promise.all(
-      submitHandlers.map(handler => Promise.resolve(handler(values))),
-    ).then(() => {
-      actions.setSubmitting(false)
-      actions.resetForm()
-      dispatch({
-        type: ACTIONS.SUBMIT_SUCCESS,
-        values,
+    Promise.all(submitHandlers.map(handler => Promise.resolve(handler(values))))
+      .then(() => {
+        actions.setSubmitting(false)
+        actions.resetForm()
+        dispatch({
+          type: ACTIONS.SUBMIT_SUCCESS,
+          values,
+        })
       })
-    })
+      .catch(e => {
+        console.error(e)
+      })
   }
 
-  return { initialValues, step: state.step, handleSubmit }
+  const activeStepIndex = useMemo(
+    () => steps.findIndex(({ name }) => name === state.step.name),
+    [steps, state.step],
+  )
+
+  return {
+    initialValues,
+    step: state.step,
+    steps,
+    activeStepIndex,
+    handleSubmit,
+  }
 }

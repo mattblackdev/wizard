@@ -30,9 +30,7 @@ export function CheckboxList(props) {
   return (
     <div style={{ margin: '24px 0px' }}>
       <FormControl component="fieldset">
-        <FormLabel
-          component="legend"
-          style={{ fontWeight: 'bold', marginBottom: 8 }}>
+        <FormLabel component="legend" style={{ marginBottom: 8 }}>
           {props.label}
         </FormLabel>
         <FormGroup>

@@ -2,7 +2,7 @@
   "type": "Wizard",
   "name": "npsw",
   "label": "NPSW",
-  "defaultStepName": "standardRequirements",
+  "defaultStepName": "intendedUse",
   "children": [
     {
       "type": "Step",
@@ -17,10 +17,16 @@
           }
         },
         {
+          "type": "Component",
+          "component": "Help",
+          "props": {
+            "value": "In this section provide an overview of the software, and how it is going to be used in the system (such as the TMV, or test environment), including what the software does.  It helps to provide an overview diagram to explain where the NPSW fits into the process or testing, etc.  This will provide clear insight for any reviewers not intimate with the NPSW."
+          }
+        },
+        {
           "type": "Input",
           "name": "intendedUse",
           "component": "TextArea",
-          "defaultValue": "hello",
           "props": {
             "label": "Intended Use",
             "placeholder": "The intended use of the XYZ NPSW is to provide support to a scripting interface to ABC engineers executing verified IC designs.  The intended output use is the design input to the development of requirements."

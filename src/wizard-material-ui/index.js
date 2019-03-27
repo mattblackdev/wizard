@@ -2,6 +2,7 @@
 export { Title } from './Title'
 export { Help } from './Help'
 export { Typography } from './Typography'
+export { Stepper } from './Stepper'
 
 // Groups
 export { Rows } from './Rows'
